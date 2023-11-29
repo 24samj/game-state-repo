@@ -51,6 +51,7 @@ export default function HangManPage() {
     const [attempt, setAttempt] = useState(10);
     const [timeLeft, setTimeLeft] = useState(2 * 60000); // 2 minutes
     const [word, setWord] = useState("HANGMAN");
+    const [prevGuesses, setPrevGuesses] = useState("");
     const statusRef = useRef();
 
     useEffect(() => {
@@ -71,6 +72,7 @@ export default function HangManPage() {
     function handleAlphabetClick(alphabet) {
         if (attempt !== 0 && !word.includes(alphabet)) {
             setAttempt(attempt - 1);
+            setPrevGuesses(prevGuesses + " " + alphabet);
         } else if (word.includes(alphabet)) {
             setCorrectGuesses([...correctGuesses, alphabet]);
         }
@@ -130,6 +132,11 @@ export default function HangManPage() {
                 sx={{ fontSize: { xs: "1rem", sm: "2rem" } }}>
                 New Word
             </Button>
+            <Typography
+                sx={{ fontSize: { xs: "1rem", sm: "2rem" } }}
+                variant="h3">
+                Previous Guesses: {prevGuesses}
+            </Typography>
             <Box>
                 {alphabets.map((alphabet, index) => (
                     <Button

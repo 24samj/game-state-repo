@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Grid, Button, Typography, Box } from "@mui/material";
 import "./TicTacToePage.css";
+
 const TicTacToe = () => {
     const [board, setBoard] = useState(Array(9).fill(null));
     const [xIsNext, setXIsNext] = useState(true);
@@ -11,17 +12,16 @@ const TicTacToe = () => {
 
     const handleSquareClick = (index) => {
         if (!winner && statusRef.current.innerText !== "Match tied") {
-            // update the board state with the current players symbol
             const newBoard = [...board];
+            if (newBoard[index] === "X" || newBoard[index] === "X") {
+                return;
+            }
             newBoard[index] = xIsNext ? "X" : "O";
             setBoard(newBoard);
 
-            // check if there is a winner
             const newWinner = calculateWinner(newBoard);
             if (newWinner) {
                 setWinner(newWinner);
-
-                // increment the winner's score
                 if (newWinner === "X") {
                     setXScore(xScore + 1);
                 } else {
@@ -29,20 +29,17 @@ const TicTacToe = () => {
                 }
             }
 
-            // switch to the next turn
             setXIsNext(!xIsNext);
         }
     };
 
     const handlePlayAgainClick = () => {
-        // reset the game state
         setBoard(Array(9).fill(null));
         setXIsNext(true);
         setWinner(null);
     };
 
     const calculateWinner = (squares) => {
-        // check all possible winning combinations
         const lines = [
             [0, 1, 2],
             [3, 4, 5],
@@ -61,10 +58,12 @@ const TicTacToe = () => {
                 squares[a] === squares[b] &&
                 squares[a] === squares[c]
             ) {
-                return squares[a];
+                squares[a] = <s>{squares[a]}</s>;
+                squares[b] = <s>{squares[b]}</s>;
+                squares[c] = <s>{squares[c]}</s>;
+                return squares[a].props.children;
             }
         }
-        // no winner
         return null;
     };
 
@@ -110,20 +109,13 @@ const TicTacToe = () => {
             <Grid
                 item
                 container
-                justifyContent={{ sm: "space-around", xs: "center" }}
+                justifyContent="center"
                 alignItems="center"
-                gap={4}>
+                gap={20}
+                sx={{ marginTop: "-5rem" }}>
                 <Grid item>
-                    <Typography variant="h6">Games won by X:</Typography>
-                    <Typography variant="h6">{xScore}</Typography>
+                    <Typography variant="h6">X Score: {xScore}</Typography>
                 </Grid>
-
-                <Grid item>
-                    <Typography variant="h6">Games won by O:</Typography>
-                    <Typography variant="h6">{oScore}</Typography>
-                </Grid>
-            </Grid>
-            <Grid item container justifyContent="center">
                 <Box position={"relative"}>
                     <Box className="board-row">
                         {renderSquare(0)}
@@ -141,16 +133,25 @@ const TicTacToe = () => {
                         {renderSquare(8)}
                     </Box>
                 </Box>
+                <Grid item>
+                    <Typography variant="h6">O Score: {oScore}</Typography>
+                </Grid>
             </Grid>
-            <Grid item>
-                <Button
-                    variant="contained"
-                    onClick={handlePlayAgainClick}
-                    disabled={
-                        !winner && !board.every((square) => square !== null)
-                    }>
-                    Play Again
-                </Button>
+            <Grid
+                item
+                container
+                justifyContent="center"
+                sx={{ marginTop: "-5rem" }}>
+                {winner && (
+                    <Button
+                        variant="contained"
+                        onClick={handlePlayAgainClick}
+                        disabled={
+                            !winner && !board.every((square) => square !== null)
+                        }>
+                        Play Again
+                    </Button>
+                )}
             </Grid>
         </Grid>
     );

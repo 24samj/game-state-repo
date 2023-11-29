@@ -3,6 +3,11 @@
     justify-content: center;
     align-items: center;
     margin-top: 5vh;
+    gap: 10vw;
+}
+
+.gameInfo {
+    font-size: 24px;
 }
 
 .grid {
@@ -17,7 +22,8 @@
 .cell {
     width: 50px;
     height: 50px;
-    border: 1px solid black;
+    border: 1px solid;
+    position: relative;
 }
 
 .snake {
@@ -25,5 +31,59 @@
 }
 
 .food {
-    background-color: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.food-image {
+    width: 80%;
+    height: 80%;
+    object-fit: cover;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.gameOverContainer {
+    margin-top: 5vh;
+}
+
+.resetBtn {
+    height: 100px;
+    width: 200px;
+    color: black;
+    background: white;
+    border: 1px solid;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+.resetBtn:hover {
+    transform: scale(1.05);
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 1vw;
+    margin-top: 2vh;
+}
+
+.controlBtn {
+    cursor: pointer;
+    color: black;
+    height: 30px;
+    width: 60px;
+    background: white;
+    border: 3px solid;
+    border-radius: 25px;
+    transition: 0.1s ease-in;
+}
+.controlBtn:hover {
+    color: red;
+    background: black;
+    transform: scale(1.05);
 }

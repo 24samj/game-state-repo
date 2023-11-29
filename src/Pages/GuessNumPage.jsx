@@ -14,25 +14,39 @@ function getRandom(max) {
     return Math.floor(Math.random() * max);
 }
 
-function getMessage(guess, randomNum) {
-    const guessNo = Number(guess);
-    if (guessNo < randomNum) return "Too low!";
-    if (guessNo > randomNum) return "Too high!";
-    if (guessNo === randomNum)
-        return "Congratulations! You guessed the number.";
-}
+// function getMessage(guess, randomNum) {
+//     const guessNo = Number(guess);
+//     if (guessNo < randomNum) return "Too low!";
+//     if (guessNo > randomNum) return "Too high!";
+//     if (guessNo === randomNum) setIsGameOver(true);
+//     return "Congratulations! You guessed the number.";
+// }
 
 const MAX_NUMBER = 9999;
 export default function GuessNumPage() {
     const [guess, setGuess] = useState("");
+    // const [randomNumber, setRandomNumber] = useState(5);
     const [randomNumber, setRandomNumber] = useState(getRandom(MAX_NUMBER));
     const [msg, setMsg] = useState("Can you guess the number?");
     const [count, setCount] = useState(0);
+    const [prevGuesses, setPrevGuesses] = useState("");
+    const [gameOver, setGameOver] = useState(false);
+
+    const getMessage = (guess, randomNum) => {
+        const guessNo = Number(guess);
+        if (guessNo < randomNum) return "Too low!";
+        if (guessNo > randomNum) return "Too high!";
+        if (guessNo === randomNum) {
+            setGameOver(true);
+            return "Congratulations! You guessed the number.";
+        }
+    };
 
     const checkGuess = (event) => {
         event.preventDefault();
         setMsg(getMessage(guess, randomNumber));
         setCount(count + 1);
+        setPrevGuesses(prevGuesses + " " + guess);
         guess !== randomNumber && setGuess("");
     };
 
@@ -41,6 +55,7 @@ export default function GuessNumPage() {
         setCount(0);
         setMsg("Can you guess the number?");
         setGuess("");
+        setGameOver(false);
     };
 
     return (
@@ -73,11 +88,15 @@ export default function GuessNumPage() {
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <IconButton
-                                    type="submit"
-                                    aria-label="check guess">
-                                    <PlayArrow fontSize="large" />
-                                </IconButton>
+                                {gameOver ? (
+                                    "Press to play again"
+                                ) : (
+                                    <IconButton
+                                        type="submit"
+                                        aria-label="check guess">
+                                        <PlayArrow fontSize="large" />
+                                    </IconButton>
+                                )}
                                 <IconButton
                                     type="button"
                                     aria-label="start new game"
@@ -92,9 +111,20 @@ export default function GuessNumPage() {
                     {msg}
                 </Typography>
                 {msg !== "Can you guess the number?" && (
-                    <Typography variant="subtitle1" sx={{ marginTop: 2 }}>
-                        Number of guesses: {count}
-                    </Typography>
+                    <>
+                        <Typography
+                            variant="subtitle1"
+                            sx={{ marginTop: 2 }}
+                            fontSize={"24px"}>
+                            Number of guesses: {count}
+                        </Typography>
+                        <Typography
+                            variant="subtitle2"
+                            sx={{ marginTop: 2 }}
+                            fontSize={"20px"}>
+                            Previous Guesses: {prevGuesses}
+                        </Typography>
+                    </>
                 )}
             </Box>
         </Container>

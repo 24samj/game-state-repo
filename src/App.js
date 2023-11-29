@@ -11,7 +11,7 @@ import {
     Tooltip,
     Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 
 import GuessNumPage from "./Pages/GuessNumPage";
@@ -34,13 +34,38 @@ export default function App() {
     const urlPath = useLocation();
     const navigate = useNavigate();
 
+    useEffect(() => {
+        const pageTitle = getPageTitle(urlPath.pathname);
+
+        document.title = `GameState | ${pageTitle}`;
+    }, [urlPath.pathname]);
+
+    const getPageTitle = (pathname) => {
+        switch (true) {
+            case pathname === "/tictactoe":
+                return "Tic Tac Toe";
+            case pathname === "/hangman":
+                return "Hangman";
+            case pathname === "/guessnumber":
+                return "Guess Number";
+            case pathname === "/memorygame":
+                return "Memory Game";
+            case pathname === "/triplesum":
+                return "Triple Sum";
+            case pathname === "/snake":
+                return "Snake";
+            default:
+                return "Homepage";
+        }
+    };
+
     return (
         <ThemeProvider theme={myTheme}>
             <CssBaseline />
             <div className="App">
                 <AppBar position="sticky">
                     <Toolbar>
-                        {urlPath.pathname == "/" || (
+                        {urlPath.pathname === "/" || (
                             <IconButton
                                 size="large"
                                 edge="start"
@@ -58,7 +83,7 @@ export default function App() {
                             component="div"
                             fontWeight="bold"
                             sx={{ flexGrow: 1 }}>
-                            Games
+                            GameState - {getPageTitle(urlPath.pathname)}
                         </Typography>
                         <Tooltip
                             title={toggleDark ? "Light Mode" : "Dark Mode"}>

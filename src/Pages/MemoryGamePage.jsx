@@ -63,7 +63,7 @@ export default function MemoryGamePage() {
     ];
 
     useEffect(() => {
-        if (imagesArray.length == openCards.length && openCards.length > 1) {
+        if (imagesArray.length === openCards.length && openCards.length > 1) {
             setGameWon(true);
         }
     }, [openCards]);
@@ -90,7 +90,7 @@ export default function MemoryGamePage() {
             if (cardsChosen?.length === 1) {
                 // Check if images are the same
                 if (cardsChosen[0] === image) {
-                    setPoints((points) => points + 2);
+                    setPoints((points) => points + 1);
                     setOpenCards((openCards) =>
                         openCards?.concat([cardsChosen[0], image])
                     );
@@ -155,6 +155,7 @@ export default function MemoryGamePage() {
                             md={1}>
                             <Card
                                 sx={{
+                                    cursor: "pointer",
                                     aspectRatio: "1/1",
                                     display: "flex",
                                     alignItems: "center",

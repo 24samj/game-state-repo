@@ -1,4 +1,5 @@
 import { useState } from "react";
+import snakeFood from "../Images/snakeFood.png";
 import "./SnakeGame.css";
 
 const SnakeGamePage = () => {
@@ -117,6 +118,7 @@ const SnakeGamePage = () => {
                 ""
             ) : (
                 <div className="gameBoard d-flex justify-content-center align-items-center">
+                    <div className="gameInfo">Collect the food!</div>
                     <div className="grid mt-5">
                         {board.map((row, i) => (
                             <div key={i} className="row">
@@ -130,19 +132,31 @@ const SnakeGamePage = () => {
                                                 ? "food"
                                                 : ""
                                         }`}>
-                                        {cell}
+                                        {cell === "food" && (
+                                            <img
+                                                src={snakeFood}
+                                                alt="food"
+                                                className="food-image"
+                                            />
+                                        )}
                                     </div>
                                 ))}
                             </div>
                         ))}
                     </div>
+                    <div className="gameInfo">Don't hit the walls!</div>
                 </div>
             )}
             {gameOver ? (
-                <button onClick={resetHandler}>Reset</button>
+                <div className="gameOverContainer">
+                    <button className="resetBtn" onClick={resetHandler}>
+                        Reset
+                    </button>
+                </div>
             ) : (
                 <div className="controls d-flex justify-content-center mt-3">
                     <button
+                        className="controlBtn"
                         onClick={() => {
                             if (direction !== "down") {
                                 setDirection("up");
@@ -152,6 +166,7 @@ const SnakeGamePage = () => {
                         Up
                     </button>
                     <button
+                        className="controlBtn"
                         onClick={() => {
                             if (direction !== "up") {
                                 setDirection("down");
@@ -161,6 +176,7 @@ const SnakeGamePage = () => {
                         Down
                     </button>
                     <button
+                        className="controlBtn"
                         onClick={() => {
                             if (direction !== "right") {
                                 setDirection("left");
@@ -170,6 +186,7 @@ const SnakeGamePage = () => {
                         Left
                     </button>
                     <button
+                        className="controlBtn"
                         onClick={() => {
                             if (direction !== "left") {
                                 setDirection("right");
@@ -181,7 +198,7 @@ const SnakeGamePage = () => {
                 </div>
             )}
             <h2 className="scorecard d-flex justify-content-center mt-3">
-                {score}
+                {gameOver ? "Your score was " + score + "." : score}
             </h2>
         </>
     );
