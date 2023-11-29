@@ -123,6 +123,7 @@ function TripleSumPage() {
                     grid.map((value, index) => (
                         <Grid item xs={3} key={index}>
                             <Button
+                                style={{ fontSize: "16px" }}
                                 variant={
                                     selected.includes(index)
                                         ? "contained"
@@ -158,7 +159,7 @@ function TripleSumPage() {
                 </Button>
                 <div style={{ marginTop: "20px" }}>
                     {isGameStarted ? (
-                        <strong>Time Left:</strong>
+                        <strong>Time Left: </strong>
                     ) : (
                         <strong>Select a number to begin! </strong>
                     )}

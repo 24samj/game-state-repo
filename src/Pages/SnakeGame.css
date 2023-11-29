@@ -13,6 +13,7 @@
 .grid {
     display: flex;
     flex-direction: column;
+    border: 3px solid red;
 }
 
 .row {
@@ -24,10 +25,6 @@
     height: 50px;
     border: 1px solid;
     position: relative;
-}
-
-.snake {
-    background-color: green;
 }
 
 .food {
@@ -51,18 +48,24 @@
     margin-top: 5vh;
 }
 
+.resetBtn,
+.controlBtn {
+    cursor: pointer;
+    color: black;
+    background: white;
+    border: 3px solid;
+    border-radius: 25px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.resetBtn:hover,
+.controlBtn:hover {
+    transform: scale(1.1);
+}
+
 .resetBtn {
     height: 100px;
     width: 200px;
-    color: black;
-    background: white;
-    border: 1px solid;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: transform 0.3s ease-in-out;
-}
-.resetBtn:hover {
-    transform: scale(1.05);
 }
 
 .controls {
@@ -73,17 +76,15 @@
 }
 
 .controlBtn {
-    cursor: pointer;
-    color: black;
     height: 30px;
     width: 60px;
-    background: white;
-    border: 3px solid;
-    border-radius: 25px;
-    transition: 0.1s ease-in;
 }
-.controlBtn:hover {
-    color: red;
-    background: black;
-    transform: scale(1.05);
+
+.snake,
+.snake-head {
+    background-color: green;
+}
+
+.snake-head {
+    background-color: rgb(0, 84, 0);
 }

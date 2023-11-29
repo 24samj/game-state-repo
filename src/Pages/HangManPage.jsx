@@ -15,6 +15,7 @@ export default function HangManPage() {
                 setCorrectGuesses([]);
                 setAttempt(Math.min(resp.data[0].length * 3, 15));
             });
+        setPrevGuesses("");
     }
 
     const alphabets = [
@@ -49,9 +50,10 @@ export default function HangManPage() {
     const [correctGuesses, setCorrectGuesses] = useState([]);
     const [timeUp, setTimeUp] = useState(false);
     const [attempt, setAttempt] = useState(10);
-    const [timeLeft, setTimeLeft] = useState(2 * 60000); // 2 minutes
     const [word, setWord] = useState("HANGMAN");
+    const [timeLeft, setTimeLeft] = useState(word?.length * 10000); // 2 minutes
     const [prevGuesses, setPrevGuesses] = useState("");
+    const [gameOver, setGameOver] = useState(false);
     const statusRef = useRef();
 
     useEffect(() => {
@@ -63,6 +65,10 @@ export default function HangManPage() {
                 setTimeUp(true);
             }
         }, 1000);
+        if (!maskedWord.includes("_") || !attempt) {
+            setTimeLeft(9999 * 1000);
+            setGameOver(true);
+        }
 
         return () => {
             clearInterval(timeInterval);
@@ -70,9 +76,16 @@ export default function HangManPage() {
     }, [timeLeft, word]);
 
     function handleAlphabetClick(alphabet) {
+        if (prevGuesses.includes(alphabet)) {
+            alert("You've already guessed that letter!");
+            return;
+        }
         if (attempt !== 0 && !word.includes(alphabet)) {
             setAttempt(attempt - 1);
             setPrevGuesses(prevGuesses + " " + alphabet);
+            if (timeLeft > 5000) {
+                setTimeLeft(timeLeft - 5000);
+            }
         } else if (word.includes(alphabet)) {
             setCorrectGuesses([...correctGuesses, alphabet]);
         }
@@ -97,26 +110,28 @@ export default function HangManPage() {
                 variant="h1">
                 {maskedWord}
             </Typography>
-            <Box>
-                <Typography
-                    sx={{ fontSize: { xs: "1rem", sm: "2rem" } }}
-                    variant="h1">
-                    {timeLeft / 1000} Seconds Left
-                </Typography>
-                <Divider />
-                <Typography
-                    sx={{ fontSize: { xs: "1rem", sm: "2rem" } }}
-                    variant="h1">
-                    {attempt} Attempts Left
-                </Typography>
-            </Box>
+            {!gameOver && (
+                <Box>
+                    <Typography
+                        sx={{ fontSize: { xs: "1rem", sm: "2rem" } }}
+                        variant="h1">
+                        {timeLeft / 1000} Seconds Left
+                    </Typography>
+                    <Divider />
+                    <Typography
+                        sx={{ fontSize: { xs: "1rem", sm: "2rem" } }}
+                        variant="h1">
+                        {attempt} Attempts Left
+                    </Typography>
+                </Box>
+            )}
             {timeUp || !attempt ? (
                 <Box>
                     <Typography ref={statusRef} variant="h2">
                         You lost!
                     </Typography>
                     <Typography variant="h5">
-                        Correct word is <strong>"{word}"</strong>
+                        Correct word was <strong>"{word}".</strong>
                     </Typography>
                 </Box>
             ) : (
@@ -127,16 +142,24 @@ export default function HangManPage() {
                 )
             )}
             <Button
-                onClick={getWord}
+                onClick={() => {
+                    getWord();
+                    setGameOver(false);
+                }}
                 variant="contained"
                 sx={{ fontSize: { xs: "1rem", sm: "2rem" } }}>
                 New Word
             </Button>
-            <Typography
-                sx={{ fontSize: { xs: "1rem", sm: "2rem" } }}
-                variant="h3">
-                Previous Guesses: {prevGuesses}
-            </Typography>
+
+            {prevGuesses === "" ? (
+                <div></div>
+            ) : (
+                <Typography
+                    sx={{ fontSize: { xs: "1rem", sm: "2rem" } }}
+                    variant="h3">
+                    Previous Guesses: {prevGuesses}
+                </Typography>
+            )}
             <Box>
                 {alphabets.map((alphabet, index) => (
                     <Button
@@ -146,6 +169,7 @@ export default function HangManPage() {
                             margin: { xs: 0.2, sm: 2 },
                         }}
                         key={index}
+                        disabled={gameOver}
                         onClick={() => handleAlphabetClick(alphabet)}>
                         {alphabet}
                     </Button>

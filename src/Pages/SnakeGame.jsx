@@ -109,7 +109,18 @@ const SnakeGamePage = () => {
     };
 
     const resetHandler = () => {
-        window.location.reload();
+        setGameOver(false);
+        setFoodRow(2);
+        setFoodCol(2);
+        setBoard(initialBoard);
+        setSnake([
+            [5, 5],
+            [5, 6],
+            [5, 7],
+            [5, 8],
+            [5, 9],
+        ]);
+        setScore(0);
     };
 
     return (
@@ -127,7 +138,14 @@ const SnakeGamePage = () => {
                                         key={j}
                                         className={`cell ${
                                             cell === "snake"
-                                                ? "snake"
+                                                ? j ===
+                                                      snake[
+                                                          snake.length - 1
+                                                      ][1] &&
+                                                  i ===
+                                                      snake[snake.length - 1][0]
+                                                    ? "snake-head"
+                                                    : "snake"
                                                 : cell === "food"
                                                 ? "food"
                                                 : ""
@@ -198,7 +216,9 @@ const SnakeGamePage = () => {
                 </div>
             )}
             <h2 className="scorecard d-flex justify-content-center mt-3">
-                {gameOver ? "Your score was " + score + "." : score}
+                {gameOver
+                    ? "Your score was " + score + "."
+                    : "Points: " + score}
             </h2>
         </>
     );
