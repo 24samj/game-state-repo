@@ -67,7 +67,7 @@ export default function GuessNumPage() {
                     height: "100%",
                 }}>
                 <Typography variant="h4" gutterBottom>
-                    Guess the Number between 0 and 9999.
+                    Guess the number between 0 and 9999.
                 </Typography>
                 <Paper sx={{ padding: 2 }}>
                     <form onSubmit={(e) => checkGuess(e)}>

@@ -140,8 +140,8 @@ function TripleSumPage() {
                         </Grid>
                     ))}
             </Grid>
-            <div style={{ marginTop: "20px" }}>
-                <strong>Target:</strong> {target}
+            <div style={{ marginTop: "20px", fontSize: "24px" }}>
+                Target: <strong>{target}</strong>
             </div>
             <div style={{ marginTop: "20px" }}>
                 <Button
@@ -163,8 +163,8 @@ function TripleSumPage() {
                     ) : (
                         <strong>Select a number to begin! </strong>
                     )}
-                    {time} seconds
                 </div>
+                {time} seconds
             </div>
             <Dialog
                 open={gameStatus.msg.length > 0}

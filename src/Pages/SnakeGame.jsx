@@ -81,7 +81,11 @@ const SnakeGamePage = () => {
                 newFoodCol = Math.floor(Math.random() * 10);
             } while (
                 newBoard[newFoodRow][newFoodCol] === "snake" ||
-                (newFoodRow === foodRow && newFoodCol === foodCol)
+                (newFoodRow === foodRow && newFoodCol === foodCol) ||
+                newSnake.some(
+                    (segment) =>
+                        segment[0] === newFoodRow && segment[1] === newFoodCol
+                )
             );
             setFoodRow(newFoodRow);
             setFoodCol(newFoodCol);
