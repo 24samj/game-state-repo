@@ -118,18 +118,24 @@ const SnakeGamePage = () => {
             [5, 9],
         ]);
         setScore(0);
+        setDirection("right");
     };
 
     return (
         <>
             <Box
                 className="gameBoard"
-                sx={{ flexDirection: "row", marginTop: "5vh" }}>
-                {!gameOver && (
-                    <Typography variant="h6" className="gameInfo">
-                        Collect the food!
-                    </Typography>
-                )}
+                sx={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
+                <Typography
+                    variant="h6"
+                    className="gameInfo"
+                    sx={{
+                        marginTop: "3vh",
+                        visibility: gameOver ? "hidden" : "visible",
+                    }}>
+                    Collect the food. Don't hit the walls!
+                </Typography>
+
                 <Box className="grid ">
                     {board.map((row, i) => (
                         <Box key={i} className="row">
@@ -146,6 +152,12 @@ const SnakeGamePage = () => {
                                             : cell === "food"
                                             ? "food"
                                             : ""
+                                    }${
+                                        cell === "snake" &&
+                                        j === snake[snake.length - 1][1] &&
+                                        i === snake[snake.length - 1][0]
+                                            ? ` ${direction}`
+                                            : ""
                                     }`}>
                                     {cell === "food" && (
                                         <img
@@ -159,69 +171,78 @@ const SnakeGamePage = () => {
                         </Box>
                     ))}
                 </Box>
-                {!gameOver && (
-                    <Typography variant="h6" className="gameInfo">
-                        Don't hit the walls!
-                    </Typography>
-                )}
-            </Box>
 
-            {!gameOver && (
-                <Box className="controls" sx={{ marginTop: "3vh" }}>
-                    <Button
-                        variant="contained"
-                        className="controlBtn"
-                        onClick={() => {
-                            if (direction !== "down") {
-                                setDirection("up");
-                                updateBoard("up");
-                            }
-                        }}>
-                        Up
-                    </Button>
-                    <Button
-                        variant="contained"
-                        className="controlBtn"
-                        onClick={() => {
-                            if (direction !== "up") {
-                                setDirection("down");
-                                updateBoard("down");
-                            }
-                        }}>
-                        Down
-                    </Button>
-                    <Button
-                        variant="contained"
-                        className="controlBtn"
-                        onClick={() => {
-                            if (direction !== "right") {
-                                setDirection("left");
-                                updateBoard("left");
-                            }
-                        }}>
-                        Left
-                    </Button>
-                    <Button
-                        variant="contained"
-                        className="controlBtn"
-                        onClick={() => {
-                            if (direction !== "left") {
-                                setDirection("right");
-                                updateBoard("right");
-                            }
-                        }}>
-                        Right
-                    </Button>
-                </Box>
-            )}
-            {!gameOver && (
                 <Typography
                     variant="h6"
                     className="scorecard"
-                    sx={{ marginTop: "3vh" }}>
+                    sx={{
+                        marginTop: "3vh",
+                        visibility: gameOver ? "hidden" : "visible",
+                    }}>
                     Points: {score}
                 </Typography>
+            </Box>
+
+            {!gameOver && (
+                <>
+                    <Box className="controls" sx={{ marginTop: "3vh" }}>
+                        <Button
+                            variant="contained"
+                            className="controlBtn"
+                            disabled={direction === "down"}
+                            onClick={() => {
+                                if (direction !== "down") {
+                                    setDirection("up");
+                                    updateBoard("up");
+                                }
+                            }}>
+                            Up
+                        </Button>
+                    </Box>
+                    <Box className="controls">
+                        <Button
+                            variant="contained"
+                            className="controlBtn"
+                            disabled={direction === "right"}
+                            onClick={() => {
+                                if (direction !== "right") {
+                                    setDirection("left");
+                                    updateBoard("left");
+                                }
+                            }}>
+                            Left
+                        </Button>
+                        <Typography>Controls</Typography>
+                        <Button
+                            variant="contained"
+                            className="controlBtn"
+                            disabled={direction === "left"}
+                            onClick={() => {
+                                if (direction !== "left") {
+                                    setDirection("right");
+                                    updateBoard("right");
+                                }
+                            }}>
+                            Right
+                        </Button>
+                    </Box>
+                    <Box className="controls">
+                        <Button
+                            variant="contained"
+                            className="controlBtn"
+                            disabled={direction === "up"}
+                            onClick={() => {
+                                if (direction !== "up") {
+                                    setDirection("down");
+                                    updateBoard("down");
+                                }
+                            }}>
+                            Down
+                        </Button>
+                    </Box>
+                </>
             )}
+
             <Dialog open={gameOver} onClose={() => resetHandler}>
                 <DialogTitle>Game Over!</DialogTitle>
                 <DialogContent>

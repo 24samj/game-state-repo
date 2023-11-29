@@ -2,7 +2,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10vw;
 }
 
 .gameInfo {
@@ -82,9 +81,26 @@
 .snake,
 .snake-head {
     background-color: green;
+    border: 1px solid;
     border-radius: 25%;
 }
 
 .snake-head {
     background-color: rgb(0, 84, 0);
+}
+
+.snake-head.up {
+    border-radius: 50% 50% 25% 25%;
+}
+
+.snake-head.down {
+    border-radius: 25% 25% 50% 50%;
+}
+
+.snake-head.right {
+    border-radius: 25% 50% 50% 25%;
+}
+
+.snake-head.left {
+    border-radius: 50% 25% 25% 50%;
 }
