@@ -72,20 +72,20 @@ function TripleSumPage() {
 
     const checkSum = (arr, target) => {
         let selectedNums = selected.map((el) => arr[el]);
-        return selectedNums.reduce((a, b) => a + b, 0) == target;
+        return selectedNums.reduce((a, b) => a + b, 0) === target;
     };
 
     const handleSubmit = () => {
         if (checkSum(grid, target)) {
             setGameStatus({
                 isWon: true,
-                msg: "You guessed it right. You're a rockstar.",
+                msg: "You guessed it right. You're a rockstar.",
                 title: "You Won.",
             });
         } else {
             setGameStatus({
                 isWon: false,
-                msg: "Oops, thats quite not right. Please try again!",
+                msg: "Oops, thats quite not right. Please try again!",
                 title: "You Lost.",
             });
         }
@@ -167,7 +167,7 @@ function TripleSumPage() {
                 </div>
             </div>
             <Dialog
-                open={gameStatus.isWon}
+                open={gameStatus.msg.length > 0}
                 onClose={() =>
                     setGameStatus({ isWon: false, msg: "", title: "" })
                 }>

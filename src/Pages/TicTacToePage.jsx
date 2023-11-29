@@ -13,7 +13,7 @@ const TicTacToe = () => {
     const handleSquareClick = (index) => {
         if (!winner && statusRef.current.innerText !== "Match tied") {
             const newBoard = [...board];
-            if (newBoard[index] === "X" || newBoard[index] === "X") {
+            if (newBoard[index] === "X" || newBoard[index] === "O") {
                 return;
             }
             newBoard[index] = xIsNext ? "X" : "O";
@@ -142,16 +142,14 @@ const TicTacToe = () => {
                 container
                 justifyContent="center"
                 sx={{ marginTop: "-5rem" }}>
-                {winner && (
-                    <Button
-                        variant="contained"
-                        onClick={handlePlayAgainClick}
-                        disabled={
-                            !winner && !board.every((square) => square !== null)
-                        }>
-                        Play Again
-                    </Button>
-                )}
+                <Button
+                    variant="contained"
+                    onClick={handlePlayAgainClick}
+                    disabled={
+                        !winner && !board.every((square) => square !== null)
+                    }>
+                    Play Again
+                </Button>
             </Grid>
         </Grid>
     );

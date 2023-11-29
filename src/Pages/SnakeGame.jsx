@@ -1,4 +1,14 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import {
+    Box,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Typography,
+} from "@mui/material";
 import snakeFood from "../Images/snakeFood.png";
 import "./SnakeGame.css";
 
@@ -8,24 +18,15 @@ const SnakeGamePage = () => {
     const [foodCol, setFoodCol] = useState(2);
     const [foodCollected, setFoodCollected] = useState(false);
     const [gameOver, setGameOver] = useState(false);
-    const initialBoard = [];
-    for (let i = 0; i < 10; i++) {
-        initialBoard[i] = [];
-        for (let j = 0; j < 10; j++) {
-            initialBoard[i][j] = "";
-        }
-    }
-    // Place the snake in its starting position
+    const initialBoard = Array.from({ length: 10 }, () => Array(10).fill(""));
     initialBoard[5][5] = "snake";
     initialBoard[5][6] = "snake";
     initialBoard[5][7] = "snake";
     initialBoard[5][8] = "snake";
     initialBoard[5][9] = "snake";
-    // Place the food in its starting position
     initialBoard[2][2] = "food";
-    // Set the initial state of the game board
+
     const [board, setBoard] = useState(initialBoard);
-    // Set the initial state of the snake
     const [snake, setSnake] = useState([
         [5, 5],
         [5, 6],
@@ -33,7 +34,6 @@ const SnakeGamePage = () => {
         [5, 8],
         [5, 9],
     ]);
-    // Set the initial direction of the snake
     const [direction, setDirection] = useState("right");
 
     const updateBoard = (newDirection) => {
@@ -41,13 +41,7 @@ const SnakeGamePage = () => {
             return;
         }
 
-        const newBoard = [];
-        for (let i = 0; i < 10; i++) {
-            newBoard[i] = [];
-            for (let j = 0; j < 10; j++) {
-                newBoard[i][j] = "";
-            }
-        }
+        const newBoard = Array.from({ length: 10 }, () => Array(10).fill(""));
 
         if (!foodCollected) {
             newBoard[foodRow][foodCol] = "food";
@@ -74,7 +68,6 @@ const SnakeGamePage = () => {
 
         if (head[0] < 0 || head[0] >= 10 || head[1] < 0 || head[1] >= 10) {
             setGameOver(true);
-            alert("game over");
             return;
         }
 
@@ -99,11 +92,11 @@ const SnakeGamePage = () => {
             newSnake.shift();
         }
         newSnake.push(head);
-        // Place the snake on the board
+
         for (let segment of newSnake) {
             newBoard[segment[0]][segment[1]] = "snake";
         }
-        // Update the state
+
         setBoard(newBoard);
         setSnake(newSnake);
     };
@@ -125,55 +118,54 @@ const SnakeGamePage = () => {
 
     return (
         <>
-            {gameOver ? (
-                ""
-            ) : (
-                <div className="gameBoard d-flex justify-content-center align-items-center">
-                    <div className="gameInfo">Collect the food!</div>
-                    <div className="grid mt-5">
-                        {board.map((row, i) => (
-                            <div key={i} className="row">
-                                {row.map((cell, j) => (
-                                    <div
-                                        key={j}
-                                        className={`cell ${
-                                            cell === "snake"
-                                                ? j ===
-                                                      snake[
-                                                          snake.length - 1
-                                                      ][1] &&
-                                                  i ===
-                                                      snake[snake.length - 1][0]
-                                                    ? "snake-head"
-                                                    : "snake"
-                                                : cell === "food"
-                                                ? "food"
-                                                : ""
-                                        }`}>
-                                        {cell === "food" && (
-                                            <img
-                                                src={snakeFood}
-                                                alt="food"
-                                                className="food-image"
-                                            />
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-                        ))}
-                    </div>
-                    <div className="gameInfo">Don't hit the walls!</div>
-                </div>
-            )}
-            {gameOver ? (
-                <div className="gameOverContainer">
-                    <button className="resetBtn" onClick={resetHandler}>
-                        Reset
-                    </button>
-                </div>
-            ) : (
-                <div className="controls d-flex justify-content-center mt-3">
-                    <button
+            <Box
+                className="gameBoard"
+                sx={{ flexDirection: "row", marginTop: "5vh" }}>
+                {!gameOver && (
+                    <Typography variant="h6" className="gameInfo">
+                        Collect the food!
+                    </Typography>
+                )}
+                <Box className="grid ">
+                    {board.map((row, i) => (
+                        <Box key={i} className="row">
+                            {row.map((cell, j) => (
+                                <Box
+                                    key={j}
+                                    className={`cell ${
+                                        cell === "snake"
+                                            ? j ===
+                                                  snake[snake.length - 1][1] &&
+                                              i === snake[snake.length - 1][0]
+                                                ? "snake-head"
+                                                : "snake"
+                                            : cell === "food"
+                                            ? "food"
+                                            : ""
+                                    }`}>
+                                    {cell === "food" && (
+                                        <img
+                                            src={snakeFood}
+                                            alt="food"
+                                            className="food-image"
+                                        />
+                                    )}
+                                </Box>
+                            ))}
+                        </Box>
+                    ))}
+                </Box>
+                {!gameOver && (
+                    <Typography variant="h6" className="gameInfo">
+                        Don't hit the walls!
+                    </Typography>
+                )}
+            </Box>
+
+            {!gameOver && (
+                <Box className="controls" sx={{ marginTop: "3vh" }}>
+                    <Button
+                        variant="contained"
                         className="controlBtn"
                         onClick={() => {
                             if (direction !== "down") {
@@ -182,8 +174,9 @@ const SnakeGamePage = () => {
                             }
                         }}>
                         Up
-                    </button>
-                    <button
+                    </Button>
+                    <Button
+                        variant="contained"
                         className="controlBtn"
                         onClick={() => {
                             if (direction !== "up") {
@@ -192,8 +185,9 @@ const SnakeGamePage = () => {
                             }
                         }}>
                         Down
-                    </button>
-                    <button
+                    </Button>
+                    <Button
+                        variant="contained"
                         className="controlBtn"
                         onClick={() => {
                             if (direction !== "right") {
@@ -202,8 +196,9 @@ const SnakeGamePage = () => {
                             }
                         }}>
                         Left
-                    </button>
-                    <button
+                    </Button>
+                    <Button
+                        variant="contained"
                         className="controlBtn"
                         onClick={() => {
                             if (direction !== "left") {
@@ -212,14 +207,33 @@ const SnakeGamePage = () => {
                             }
                         }}>
                         Right
-                    </button>
-                </div>
+                    </Button>
+                </Box>
             )}
-            <h2 className="scorecard d-flex justify-content-center mt-3">
-                {gameOver
-                    ? "Your score was " + score + "."
-                    : "Points: " + score}
-            </h2>
+            {!gameOver && (
+                <Typography
+                    variant="h6"
+                    className="scorecard"
+                    sx={{ marginTop: "3vh" }}>
+                    Points: {score}
+                </Typography>
+            )}
+            <Dialog open={gameOver} onClose={() => resetHandler}>
+                <DialogTitle>Game Over!</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Your score was {score}.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        onClick={() => {
+                            resetHandler();
+                        }}>
+                        Play Again
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </>
     );
 };

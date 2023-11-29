@@ -26,17 +26,13 @@
     float: left;
     font-weight: bold;
     line-height: 34px;
-
-    margin-right: -1px;
-    margin-top: -1px;
+    margin: -1px 0 0 -1px;
     padding: 0;
     text-align: center;
-
     display: flex;
     align-items: center;
     justify-content: center;
     transition: transform 0.2s;
-
     cursor: pointer;
 }
 

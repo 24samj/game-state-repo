@@ -14,14 +14,6 @@ function getRandom(max) {
     return Math.floor(Math.random() * max);
 }
 
-// function getMessage(guess, randomNum) {
-//     const guessNo = Number(guess);
-//     if (guessNo < randomNum) return "Too low!";
-//     if (guessNo > randomNum) return "Too high!";
-//     if (guessNo === randomNum) setIsGameOver(true);
-//     return "Congratulations! You guessed the number.";
-// }
-
 const MAX_NUMBER = 9999;
 export default function GuessNumPage() {
     const [guess, setGuess] = useState("");
@@ -46,7 +38,12 @@ export default function GuessNumPage() {
         event.preventDefault();
         setMsg(getMessage(guess, randomNumber));
         setCount(count + 1);
-        setPrevGuesses(prevGuesses + " " + guess);
+        if (prevGuesses === "") {
+            setPrevGuesses(prevGuesses + " " + guess);
+        } else {
+            setPrevGuesses(prevGuesses + ", " + guess);
+        }
+
         guess !== randomNumber && setGuess("");
     };
 
@@ -56,6 +53,7 @@ export default function GuessNumPage() {
         setMsg("Can you guess the number?");
         setGuess("");
         setGameOver(false);
+        setPrevGuesses("");
     };
 
     return (
