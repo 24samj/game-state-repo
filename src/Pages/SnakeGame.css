@@ -1,0 +1,29 @@
+.gameBoard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5vh;
+}
+
+.grid {
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+}
+
+.cell {
+    width: 50px;
+    height: 50px;
+    border: 1px solid black;
+}
+
+.snake {
+    background-color: green;
+}
+
+.food {
+    background-color: red;
+}
