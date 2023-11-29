@@ -91,16 +91,20 @@
 
 .snake-head.up {
     border-radius: 50% 50% 25% 25%;
+    border-top: 10px solid;
 }
 
 .snake-head.down {
     border-radius: 25% 25% 50% 50%;
+    border-bottom: 10px solid;
 }
 
 .snake-head.right {
     border-radius: 25% 50% 50% 25%;
+    border-right: 10px solid;
 }
 
 .snake-head.left {
     border-radius: 50% 25% 25% 50%;
+    border-left: 10px solid;
 }

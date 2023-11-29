@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Box,
     Button,
@@ -34,7 +34,7 @@ const SnakeGamePage = () => {
         [5, 8],
         [5, 9],
     ]);
-    const [direction, setDirection] = useState("right");
+    const [direction, setDirection] = useState("up");
 
     const updateBoard = (newDirection) => {
         if (gameOver) {
@@ -118,8 +118,21 @@ const SnakeGamePage = () => {
             [5, 9],
         ]);
         setScore(0);
-        setDirection("right");
+        setDirection("up");
     };
+
+    // Auto-move logic
+    useEffect(() => {
+        let timer;
+
+        if (!gameOver) {
+            timer = setInterval(() => {
+                updateBoard(direction);
+            }, 1000);
+        }
+
+        return () => clearInterval(timer);
+    }, [gameOver, direction, snake]);
 
     return (
         <>
@@ -189,7 +202,9 @@ const SnakeGamePage = () => {
                         <Button
                             variant="contained"
                             className="controlBtn"
-                            disabled={direction === "down"}
+                            disabled={
+                                direction === "down" || direction === "up"
+                            }
                             onClick={() => {
                                 if (direction !== "down") {
                                     setDirection("up");
@@ -203,7 +218,9 @@ const SnakeGamePage = () => {
                         <Button
                             variant="contained"
                             className="controlBtn"
-                            disabled={direction === "right"}
+                            disabled={
+                                direction === "right" || direction === "left"
+                            }
                             onClick={() => {
                                 if (direction !== "right") {
                                     setDirection("left");
@@ -216,7 +233,9 @@ const SnakeGamePage = () => {
                         <Button
                             variant="contained"
                             className="controlBtn"
-                            disabled={direction === "left"}
+                            disabled={
+                                direction === "left" || direction === "right"
+                            }
                             onClick={() => {
                                 if (direction !== "left") {
                                     setDirection("right");
@@ -230,7 +249,9 @@ const SnakeGamePage = () => {
                         <Button
                             variant="contained"
                             className="controlBtn"
-                            disabled={direction === "up"}
+                            disabled={
+                                direction === "up" || direction === "down"
+                            }
                             onClick={() => {
                                 if (direction !== "up") {
                                     setDirection("down");
